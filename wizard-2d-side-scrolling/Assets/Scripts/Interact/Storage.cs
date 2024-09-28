@@ -10,8 +10,15 @@ public class Storage : MonoBehaviour, IInteractable
     [Range(0, 30)]
     public int maxSpawnItem;
 
+    [HideInInspector] public Animator anim;
+
     bool isFirstTimeOpen = true;
     List<StorageSlot> allStorageSlot = new List<StorageSlot>();
+
+    private void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
 
     void SpawnItem()
     {
@@ -79,6 +86,8 @@ public class Storage : MonoBehaviour, IInteractable
         {
             SpawnItemObj();
         }
+
+        anim.Play("Open");
 
         isFirstTimeOpen = false;
 

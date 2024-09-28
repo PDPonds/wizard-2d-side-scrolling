@@ -232,6 +232,39 @@ public class PlayerManager : MonoBehaviour
         return playerUI.storageInventory.transform.GetChild(index);
     }
 
+    public Transform GetInventorySlot(int index)
+    {
+        return playerUI.mainInventory.transform.GetChild(index);
+    }
+
+    public bool HasFreeSlotInInventory(out int slotIndex)
+    {
+        for (int i = 0; i < playerUI.mainInventory.transform.childCount; i++)
+        {
+            if (playerUI.mainInventory.transform.GetChild(i).childCount == 0)
+            {
+                slotIndex = i;
+                return true;
+            }
+        }
+        slotIndex = -1;
+        return false;
+    }
+
+    public bool HasFreeSlotInStorage(out int slotIndex)
+    {
+        for (int i = 0; i < playerUI.storageInventory.transform.childCount; i++)
+        {
+            if (playerUI.storageInventory.transform.GetChild(i).childCount == 0)
+            {
+                slotIndex = i;
+                return true;
+            }
+        }
+        slotIndex = -1;
+        return false;
+    }
+
     #endregion
 
     #region Animation Controller

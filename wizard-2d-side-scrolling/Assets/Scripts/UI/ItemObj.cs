@@ -8,17 +8,13 @@ using UnityEngine.UI;
 public class ItemObj : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     [SerializeField] TextMeshProUGUI amountText;
-    Image img;
+    [SerializeField] Image img;
+    [SerializeField] Button btn;
 
     [HideInInspector] public Transform parentAfterDrag;
 
     [HideInInspector] public ItemSO item;
     [HideInInspector] public int amount;
-
-    private void Awake()
-    {
-        img = GetComponent<Image>();
-    }
 
     public void SetupItem(ItemSO item, int amount)
     {
@@ -90,4 +86,5 @@ public class ItemObj : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
             GameManager.Instance.player.curSelectStorage.UpdateStorage();
         }
     }
+
 }

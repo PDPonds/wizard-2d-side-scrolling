@@ -17,7 +17,7 @@ public class PlayerUI : MonoBehaviour
     [SerializeField] GameObject interactText;
 
     [Header("===== Inventory =====")]
-    [SerializeField] GameObject mainInventory;
+    public GameObject mainInventory;
     public Transform itemRestPoint;
 
     [Header("===== Storage =====")]
@@ -86,9 +86,13 @@ public class PlayerUI : MonoBehaviour
         if (mainInventory.activeSelf)
         {
             mainInventory.SetActive(false);
-            storageInventory.SetActive(false);
-            playerManager.curSelectStorage = null;
-            DestroyItemObjInStorage();
+            if (playerManager.curSelectStorage != null)
+            {
+                storageInventory.SetActive(false);
+                playerManager.curSelectStorage.anim.Play("Close");
+                playerManager.curSelectStorage = null;
+                DestroyItemObjInStorage();
+            }
             playerManager.SwitchBehavior(PlayerBehavior.Normal);
         }
         else
