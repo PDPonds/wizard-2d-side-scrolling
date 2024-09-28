@@ -6,45 +6,33 @@ using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
-    #region Action
     public event Action onPlayerStartMove;
     public event Action onPlayerEndMove;
     public event Action onPlayerJump;
     public event Action onPlayerInteract;
-    #endregion
-
-    #region Ref
 
     CapsuleCollider2D col;
     Rigidbody2D rb;
     SpriteRenderer spriteRen;
     Animator anim;
     InputManager inputManager;
-    PlayerUI playerUI;
+    [HideInInspector] public PlayerUI playerUI;
 
-    #endregion
-
-    #region Movement
     [Header("===== Movement =====")]
     [SerializeField] float moveSpeed;
     [HideInInspector] public Vector2 moveInput;
-    #endregion
 
-    #region Jump
     [Header("===== Jump =====")]
     [SerializeField] float jumpForce;
     [Header("- Jump Condition")]
     [SerializeField] LayerMask jumpMask;
     [SerializeField] float jump_checkAreaSize;
     bool canJump;
-    #endregion
 
-    #region Interact
     [Header("===== Interact =====")]
     [SerializeField] float interactSize;
     [SerializeField] LayerMask interactMask;
     IInteractable curIInteract;
-    #endregion
 
     private void OnEnable()
     {
