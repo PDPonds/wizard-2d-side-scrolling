@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4516810673495094162}
   - component: {fileID: -6526320650977219964}
   - component: {fileID: 1123656497911054018}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -186,6 +186,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   moveInput: {x: 0, y: 0}
+  jumpForce: 5
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 64
+  jump_checkAreaSize: 0.25
 --- !u!114 &1123656497911054018
 MonoBehaviour:
   m_ObjectHideFlags: 0

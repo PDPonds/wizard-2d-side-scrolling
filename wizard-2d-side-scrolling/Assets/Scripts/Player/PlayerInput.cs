@@ -35,6 +35,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""79eb41cb-623f-47ce-8896-4d68f7ec664e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -147,6 +156,28 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b969e756-6429-4b9f-a794-f3e0cc48df07"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8e845509-9ccf-493e-97f9-b765ea210a33"",
+                    ""path"": ""<Keyboard>/upArrow"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -156,6 +187,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         // Controller
         m_Controller = asset.FindActionMap("Controller", throwIfNotFound: true);
         m_Controller_Move = m_Controller.FindAction("Move", throwIfNotFound: true);
+        m_Controller_Jump = m_Controller.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -218,11 +250,13 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Controller;
     private List<IControllerActions> m_ControllerActionsCallbackInterfaces = new List<IControllerActions>();
     private readonly InputAction m_Controller_Move;
+    private readonly InputAction m_Controller_Jump;
     public struct ControllerActions
     {
         private @PlayerInput m_Wrapper;
         public ControllerActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Controller_Move;
+        public InputAction @Jump => m_Wrapper.m_Controller_Jump;
         public InputActionMap Get() { return m_Wrapper.m_Controller; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -235,6 +269,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
         }
 
         private void UnregisterCallbacks(IControllerActions instance)
@@ -242,6 +279,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
         }
 
         public void RemoveCallbacks(IControllerActions instance)
@@ -262,5 +302,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     public interface IControllerActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }

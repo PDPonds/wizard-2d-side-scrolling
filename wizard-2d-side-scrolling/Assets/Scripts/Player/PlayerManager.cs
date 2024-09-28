@@ -9,6 +9,7 @@ public class PlayerManager : MonoBehaviour
     #region Action
     public event Action onPlayerStartMove;
     public event Action onPlayerEndMove;
+    public event Action onPlayerJump;
     #endregion
 
     #region Ref
@@ -27,11 +28,21 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector] public Vector2 moveInput;
     #endregion
 
+    #region Jump
+    [Header("===== Jump =====")]
+    [SerializeField] float jumpForce;
+    [Header("- Jump Condition")]
+    [SerializeField] LayerMask groundMask;
+    [SerializeField] float jump_checkAreaSize;
+    bool canJump;
+    #endregion
+
     private void OnEnable()
     {
         onPlayerStartMove += HandleStartMoveAnim;
         onPlayerEndMove += HandleEndMoveAnim;
 
+        onPlayerJump += Jump;
     }
 
     private void OnDisable()
@@ -39,6 +50,7 @@ public class PlayerManager : MonoBehaviour
         onPlayerStartMove -= HandleStartMoveAnim;
         onPlayerEndMove -= HandleEndMoveAnim;
 
+        onPlayerJump -= Jump;
     }
 
     private void Awake()
@@ -53,6 +65,7 @@ public class PlayerManager : MonoBehaviour
     private void FixedUpdate()
     {
         MoveHandle();
+        CheckJumpCondition();
     }
 
     #region Movement Controller
@@ -88,6 +101,37 @@ public class PlayerManager : MonoBehaviour
 
     #endregion
 
+    #region Jump Controller
+
+    void CheckJumpCondition()
+    {
+        Vector2 feetPos = transform.position + (-transform.up * (col.size.y / 2));
+        canJump = Physics2D.OverlapCircle(feetPos, jump_checkAreaSize, groundMask);
+
+        OnAirAnimation();
+    }
+
+    public void JumpPerformed()
+    {
+        if (canJump)
+        {
+            onPlayerJump?.Invoke();
+        }
+    }
+
+    void Jump()
+    {
+        rb.AddForce(transform.up * jumpForce, ForceMode2D.Impulse);
+        Anim_Play("Jump");
+    }
+
+    void OnAirAnimation()
+    {
+        Anim_SetBool("onAir", !canJump);
+    }
+
+    #endregion
+
     #region Animation Controller
 
     public void Anim_SetBool(string variable, bool result)
@@ -100,6 +144,12 @@ public class PlayerManager : MonoBehaviour
         anim.SetFloat(variable, value);
     }
 
+    public void Anim_Play(string name)
+    {
+        anim.Play(name);
+    }
+
     #endregion
+
 
 }

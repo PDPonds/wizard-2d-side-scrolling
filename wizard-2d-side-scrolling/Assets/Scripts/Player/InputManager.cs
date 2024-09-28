@@ -18,6 +18,8 @@ public class InputManager : MonoBehaviour
 
             input.Controller.Move.performed += i => playerManager.StartMove(i);
             input.Controller.Move.canceled += i => playerManager.EndMove(i);
+
+            input.Controller.Jump.performed += i => playerManager.JumpPerformed();
         }
 
         input.Enable();
