@@ -10,6 +10,7 @@ public class PlayerManager : MonoBehaviour
     public event Action onPlayerStartMove;
     public event Action onPlayerEndMove;
     public event Action onPlayerJump;
+    public event Action onPlayerInteract;
     #endregion
 
     #region Ref
@@ -19,6 +20,7 @@ public class PlayerManager : MonoBehaviour
     SpriteRenderer spriteRen;
     Animator anim;
     InputManager inputManager;
+    PlayerUI playerUI;
 
     #endregion
 
@@ -32,9 +34,16 @@ public class PlayerManager : MonoBehaviour
     [Header("===== Jump =====")]
     [SerializeField] float jumpForce;
     [Header("- Jump Condition")]
-    [SerializeField] LayerMask groundMask;
+    [SerializeField] LayerMask jumpMask;
     [SerializeField] float jump_checkAreaSize;
     bool canJump;
+    #endregion
+
+    #region Interact
+    [Header("===== Interact =====")]
+    [SerializeField] float interactSize;
+    [SerializeField] LayerMask interactMask;
+    IInteractable curIInteract;
     #endregion
 
     private void OnEnable()
@@ -43,6 +52,8 @@ public class PlayerManager : MonoBehaviour
         onPlayerEndMove += HandleEndMoveAnim;
 
         onPlayerJump += Jump;
+
+        onPlayerInteract += Interact;
     }
 
     private void OnDisable()
@@ -51,6 +62,8 @@ public class PlayerManager : MonoBehaviour
         onPlayerEndMove -= HandleEndMoveAnim;
 
         onPlayerJump -= Jump;
+
+        onPlayerInteract -= Interact;
     }
 
     private void Awake()
@@ -60,12 +73,14 @@ public class PlayerManager : MonoBehaviour
         spriteRen = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
         inputManager = GetComponent<InputManager>();
+        playerUI = GetComponent<PlayerUI>();
     }
 
     private void FixedUpdate()
     {
         MoveHandle();
         CheckJumpCondition();
+        CheckInteractCondition();
     }
 
     #region Movement Controller
@@ -106,7 +121,7 @@ public class PlayerManager : MonoBehaviour
     void CheckJumpCondition()
     {
         Vector2 feetPos = transform.position + (-transform.up * (col.size.y / 2));
-        canJump = Physics2D.OverlapCircle(feetPos, jump_checkAreaSize, groundMask);
+        canJump = Physics2D.OverlapCircle(feetPos, jump_checkAreaSize, jumpMask);
 
         OnAirAnimation();
     }
@@ -132,6 +147,47 @@ public class PlayerManager : MonoBehaviour
 
     #endregion
 
+    #region Interact
+
+    void CheckInteractCondition()
+    {
+        Collider2D col = Physics2D.OverlapCircle(transform.position, interactSize, interactMask);
+        if (col != null)
+        {
+            if (col.TryGetComponent<IInteractable>(out IInteractable interactable))
+            {
+                playerUI.SetInteractText(interactable.GetInteractText());
+                playerUI.ShowInteractText();
+                curIInteract = interactable;
+            }
+            else
+            {
+                playerUI.HideInteractText();
+                curIInteract = null;
+            }
+        }
+        else
+        {
+            playerUI.HideInteractText();
+            curIInteract = null;
+        }
+    }
+
+    public void InteractPerformed()
+    {
+        if (curIInteract != null)
+        {
+            onPlayerInteract?.Invoke();
+        }
+    }
+
+    void Interact()
+    {
+        curIInteract.Interact();
+    }
+
+    #endregion
+
     #region Animation Controller
 
     public void Anim_SetBool(string variable, bool result)
@@ -151,5 +207,10 @@ public class PlayerManager : MonoBehaviour
 
     #endregion
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, interactSize);
+    }
 
 }
