@@ -27,6 +27,8 @@ public class InputManager : MonoBehaviour
 
             input.Controller.ToggleInventory.performed += i => playerUI.ToggleMainInventory();
 
+            input.Controller.MousePos.performed += i => playerManager.mousePos = i.ReadValue<Vector2>();
+
         }
 
         input.Enable();

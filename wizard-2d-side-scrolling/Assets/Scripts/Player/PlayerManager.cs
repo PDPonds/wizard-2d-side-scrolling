@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+public enum PlayerBehavior
+{
+    Normal, UIShowing
+}
+
 public class PlayerManager : MonoBehaviour
 {
     public event Action onPlayerStartMove;
@@ -17,6 +22,11 @@ public class PlayerManager : MonoBehaviour
     Animator anim;
     InputManager inputManager;
     [HideInInspector] public PlayerUI playerUI;
+
+    [HideInInspector] public Vector2 mousePos;
+
+    [Header("===== Behavior =====")]
+    [SerializeField] PlayerBehavior curBehavior;
 
     [Header("===== Movement =====")]
     [SerializeField] float moveSpeed;
@@ -33,6 +43,9 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] float interactSize;
     [SerializeField] LayerMask interactMask;
     IInteractable curIInteract;
+
+    [Header("===== Storage =====")]
+    [HideInInspector] public Storage curSelectStorage;
 
     private void OnEnable()
     {
@@ -66,17 +79,52 @@ public class PlayerManager : MonoBehaviour
 
     private void FixedUpdate()
     {
+        UpdateBehavior();
         MoveHandle();
         CheckJumpCondition();
         CheckInteractCondition();
     }
 
+    #region Player Behavior
+    public void SwitchBehavior(PlayerBehavior behavior)
+    {
+        curBehavior = behavior;
+        switch (curBehavior)
+        {
+            case PlayerBehavior.Normal:
+                break;
+            case PlayerBehavior.UIShowing:
+                break;
+        }
+    }
+
+    public void UpdateBehavior()
+    {
+        switch (curBehavior)
+        {
+            case PlayerBehavior.Normal:
+                break;
+            case PlayerBehavior.UIShowing:
+                break;
+        }
+    }
+
+    public bool IsBehavior(PlayerBehavior behavior)
+    {
+        return curBehavior == behavior;
+    }
+
+    #endregion
+
     #region Movement Controller
 
     public void StartMove(InputAction.CallbackContext context)
     {
-        moveInput = context.ReadValue<Vector2>();
-        onPlayerStartMove?.Invoke();
+        if (IsBehavior(PlayerBehavior.Normal))
+        {
+            moveInput = context.ReadValue<Vector2>();
+            onPlayerStartMove?.Invoke();
+        }
     }
 
     public void EndMove(InputAction.CallbackContext context)
@@ -117,7 +165,7 @@ public class PlayerManager : MonoBehaviour
 
     public void JumpPerformed()
     {
-        if (canJump)
+        if (canJump && IsBehavior(PlayerBehavior.Normal))
         {
             onPlayerJump?.Invoke();
         }
@@ -177,6 +225,15 @@ public class PlayerManager : MonoBehaviour
 
     #endregion
 
+    #region Storage
+
+    public Transform GetStorageSlot(int index)
+    {
+        return playerUI.storageInventory.transform.GetChild(index);
+    }
+
+    #endregion
+
     #region Animation Controller
 
     public void Anim_SetBool(string variable, bool result)
@@ -195,11 +252,5 @@ public class PlayerManager : MonoBehaviour
     }
 
     #endregion
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, interactSize);
-    }
 
 }

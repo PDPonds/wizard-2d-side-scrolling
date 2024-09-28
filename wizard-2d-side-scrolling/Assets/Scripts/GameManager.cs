@@ -33,6 +33,12 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public int curMinute;
     [HideInInspector] public float curSec;
 
+    [Header("===== Item Generator =====")]
+    [SerializeField] List<ItemSO> allItems = new List<ItemSO>();
+    [SerializeField] GameObject itemObjPrefab;
+    [SerializeField] int minDrop;
+    [SerializeField] int maxDrop;
+
     private void Awake()
     {
         InitPrefab();
@@ -137,6 +143,27 @@ public class GameManager : Singleton<GameManager>
                 break;
         }
         playerUI.UpdateTimeOfDayText();
+    }
+
+    #endregion
+
+    #region ItemObj Generator
+
+    public void GenerateItemObj(ItemSO itemSO, int amount, Transform slot)
+    {
+        GameObject obj = Instantiate(itemObjPrefab, slot);
+        ItemObj itemObj = obj.GetComponent<ItemObj>();
+        itemObj.SetupItem(itemSO, amount);
+    }
+
+    public ItemSO RandomItem()
+    {
+        return allItems[Random.Range(0, allItems.Count)];
+    }
+
+    public int RandomAmount()
+    {
+        return Random.Range(minDrop, maxDrop);
     }
 
     #endregion

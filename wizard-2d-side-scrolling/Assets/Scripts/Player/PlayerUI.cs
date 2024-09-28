@@ -1,10 +1,12 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class PlayerUI : MonoBehaviour
 {
+    PlayerManager playerManager;
+
     [Header("===== Time =====")]
     [SerializeField] TextMeshProUGUI hoursText;
     [SerializeField] TextMeshProUGUI dayText;
@@ -16,9 +18,15 @@ public class PlayerUI : MonoBehaviour
 
     [Header("===== Inventory =====")]
     [SerializeField] GameObject mainInventory;
+    public Transform itemRestPoint;
+
+    [Header("===== Storage =====")]
+    public GameObject storageInventory;
 
     private void Awake()
     {
+        playerManager = GetComponent<PlayerManager>();
+
         UpdateDay();
         UpdateDayCount();
         UpdateTimeOfDayText();
@@ -78,10 +86,27 @@ public class PlayerUI : MonoBehaviour
         if (mainInventory.activeSelf)
         {
             mainInventory.SetActive(false);
+            storageInventory.SetActive(false);
+            playerManager.curSelectStorage = null;
+            DestroyItemObjInStorage();
+            playerManager.SwitchBehavior(PlayerBehavior.Normal);
         }
         else
         {
             mainInventory.SetActive(true);
+            playerManager.SwitchBehavior(PlayerBehavior.UIShowing);
+        }
+    }
+
+    void DestroyItemObjInStorage()
+    {
+        for (int i = 0; i < storageInventory.transform.childCount; i++)
+        {
+            Transform slot = storageInventory.transform.GetChild(i);
+            if (slot.childCount > 0)
+            {
+                Destroy(slot.GetChild(0).gameObject);
+            }
         }
     }
 
