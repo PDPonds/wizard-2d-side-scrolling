@@ -94,7 +94,8 @@ public class PlayerManager : MonoBehaviour
     {
         if (moveInput.x > 0) spriteRen.flipX = false;
         else if (moveInput.x < 0) spriteRen.flipX = true;
-        Anim_SetBool("isMove", true);
+
+        if (moveInput.x != 0) Anim_SetBool("isMove", true);
     }
 
     void HandleEndMoveAnim()

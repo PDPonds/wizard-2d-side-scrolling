@@ -53,6 +53,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""37cdc13b-9261-40d8-81ff-b2f207cbc3cb"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -198,6 +207,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""df38ab1b-d8ca-401d-b692-7ee1ab332ac3"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -209,6 +229,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Controller_Move = m_Controller.FindAction("Move", throwIfNotFound: true);
         m_Controller_Jump = m_Controller.FindAction("Jump", throwIfNotFound: true);
         m_Controller_Interact = m_Controller.FindAction("Interact", throwIfNotFound: true);
+        m_Controller_ToggleInventory = m_Controller.FindAction("ToggleInventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -273,6 +294,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Controller_Move;
     private readonly InputAction m_Controller_Jump;
     private readonly InputAction m_Controller_Interact;
+    private readonly InputAction m_Controller_ToggleInventory;
     public struct ControllerActions
     {
         private @PlayerInput m_Wrapper;
@@ -280,6 +302,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Move => m_Wrapper.m_Controller_Move;
         public InputAction @Jump => m_Wrapper.m_Controller_Jump;
         public InputAction @Interact => m_Wrapper.m_Controller_Interact;
+        public InputAction @ToggleInventory => m_Wrapper.m_Controller_ToggleInventory;
         public InputActionMap Get() { return m_Wrapper.m_Controller; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -298,6 +321,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Interact.started += instance.OnInteract;
             @Interact.performed += instance.OnInteract;
             @Interact.canceled += instance.OnInteract;
+            @ToggleInventory.started += instance.OnToggleInventory;
+            @ToggleInventory.performed += instance.OnToggleInventory;
+            @ToggleInventory.canceled += instance.OnToggleInventory;
         }
 
         private void UnregisterCallbacks(IControllerActions instance)
@@ -311,6 +337,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Interact.started -= instance.OnInteract;
             @Interact.performed -= instance.OnInteract;
             @Interact.canceled -= instance.OnInteract;
+            @ToggleInventory.started -= instance.OnToggleInventory;
+            @ToggleInventory.performed -= instance.OnToggleInventory;
+            @ToggleInventory.canceled -= instance.OnToggleInventory;
         }
 
         public void RemoveCallbacks(IControllerActions instance)
@@ -333,5 +362,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnToggleInventory(InputAction.CallbackContext context);
     }
 }

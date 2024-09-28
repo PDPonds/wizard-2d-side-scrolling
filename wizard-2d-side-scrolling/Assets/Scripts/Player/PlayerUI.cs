@@ -14,6 +14,9 @@ public class PlayerUI : MonoBehaviour
     [Header("===== Interact =====")]
     [SerializeField] GameObject interactText;
 
+    [Header("===== Inventory =====")]
+    [SerializeField] GameObject mainInventory;
+
     private void Awake()
     {
         UpdateDay();
@@ -64,6 +67,22 @@ public class PlayerUI : MonoBehaviour
     public void UpdateTimeOfDayText()
     {
         timeOfDayText.text = $"{GameManager.Instance.curTimeOfTheDay}";
+    }
+
+    #endregion
+
+    #region Inventory
+
+    public void ToggleMainInventory()
+    {
+        if (mainInventory.activeSelf)
+        {
+            mainInventory.SetActive(false);
+        }
+        else
+        {
+            mainInventory.SetActive(true);
+        }
     }
 
     #endregion

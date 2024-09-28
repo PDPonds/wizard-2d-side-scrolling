@@ -7,10 +7,12 @@ public class InputManager : MonoBehaviour
 {
     PlayerInput input;
     PlayerManager playerManager;
+    PlayerUI playerUI;
 
     private void OnEnable()
     {
         playerManager = GetComponent<PlayerManager>();
+        playerUI = GetComponent<PlayerUI>();
 
         if (input == null)
         {
@@ -22,6 +24,8 @@ public class InputManager : MonoBehaviour
             input.Controller.Jump.performed += i => playerManager.JumpPerformed();
 
             input.Controller.Interact.performed += i => playerManager.InteractPerformed();
+
+            input.Controller.ToggleInventory.performed += i => playerUI.ToggleMainInventory();
 
         }
 
