@@ -153,7 +153,10 @@ public class GameManager : Singleton<GameManager>
     {
         GameObject obj = Instantiate(itemObjPrefab, slot);
         ItemObj itemObj = obj.GetComponent<ItemObj>();
-        itemObj.SetupItem(itemSO, amount);
+        if (amount <= itemSO.maxStack)
+            itemObj.SetupItem(itemSO, amount);
+        else
+            itemObj.SetupItem(itemSO, itemSO.maxStack);
     }
 
     public ItemSO RandomItem()

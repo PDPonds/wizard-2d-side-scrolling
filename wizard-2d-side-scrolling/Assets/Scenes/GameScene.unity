@@ -2220,18 +2220,6 @@ PrefabInstance:
       propertyPath: spawnPoin
       value: 
       objectReference: {fileID: 550146090}
-    - target: {fileID: 6784175756701483618, guid: 58330cb6221747c47b9bae39dc8d3c1d, type: 3}
-      propertyPath: allItems.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6784175756701483618, guid: 58330cb6221747c47b9bae39dc8d3c1d, type: 3}
-      propertyPath: allItems.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: c5d14c9ffb4e03e4795b323ef315570f, type: 2}
-    - target: {fileID: 6784175756701483618, guid: 58330cb6221747c47b9bae39dc8d3c1d, type: 3}
-      propertyPath: allItems.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 3d06e9046f08260449a054e8b283e7f1, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
