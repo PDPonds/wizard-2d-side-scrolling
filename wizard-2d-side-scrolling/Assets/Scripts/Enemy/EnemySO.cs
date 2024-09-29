@@ -22,9 +22,6 @@ public class EnemySO : ScriptableObject
     [Header("===== Walk =====")]
     public float moveSpeed;
 
-    [Header("===== Chase =====")]
-    public float chaseTimeWhenPlayerIsClose;
-
     [Header("===== Attack =====")]
     [Header("- Damage")]
     public int enemyDmg;

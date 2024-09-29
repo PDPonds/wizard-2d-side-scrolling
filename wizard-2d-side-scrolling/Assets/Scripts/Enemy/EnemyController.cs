@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public enum EnemyBehavior
 {
@@ -12,7 +12,8 @@ public class EnemyController : MonoBehaviour, ICombatable
 {
     [SerializeField] LayerMask attackMask;
     [SerializeField] Transform attackPoint;
-
+    [SerializeField] Canvas canvas;
+    [SerializeField] Image hpFill;
     public EnemySO enemy;
 
     [SerializeField] EnemyBehavior behavior;
@@ -33,6 +34,8 @@ public class EnemyController : MonoBehaviour, ICombatable
         col = rb.GetComponent<Collider2D>();
         anim = GetComponent<Animator>();
 
+        canvas.worldCamera = Camera.main;
+
         SetHP(enemy.enemyHP);
         anim.runtimeAnimatorController = enemy.animOverride;
         SwitchBehavior(EnemyBehavior.Idle);
@@ -47,11 +50,13 @@ public class EnemyController : MonoBehaviour, ICombatable
     public void SetHP(int amount)
     {
         curHP = amount;
+        UpdateHPFill();
     }
 
     public void Heal(int amount)
     {
         curHP += amount;
+        UpdateHPFill();
         if (curHP > enemy.enemyHP)
         {
             curHP = enemy.enemyHP;
@@ -61,6 +66,7 @@ public class EnemyController : MonoBehaviour, ICombatable
     public void TakeDamage(int amount)
     {
         curHP -= amount;
+        UpdateHPFill();
         if (curHP <= 0)
         {
             Dead();
@@ -70,6 +76,12 @@ public class EnemyController : MonoBehaviour, ICombatable
     public void Dead()
     {
         SwitchBehavior(EnemyBehavior.Dead);
+    }
+
+    void UpdateHPFill()
+    {
+        float percent = (float)curHP / (float)enemy.enemyHP;
+        hpFill.fillAmount = percent;
     }
 
     public void SwitchBehavior(EnemyBehavior behavior)
@@ -184,9 +196,25 @@ public class EnemyController : MonoBehaviour, ICombatable
         }
         else if (enemy is RangeEnemy range)
         {
+            GameObject bullet = Instantiate(range.bulletPrefab, attackPoint.transform.position, Quaternion.identity);
+
+            SpriteRenderer ren = bullet.GetComponent<SpriteRenderer>();
+            Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
             PlayerManager player = GameManager.Instance.player;
             Vector2 playerPos = player.transform.position;
+            Vector2 dir = playerPos - (Vector2)transform.position;
+            dir.Normalize();
+            rb.AddForce(dir * range.bulletSpeed, ForceMode2D.Impulse);
+
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+            Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+            bullet.transform.rotation = q;
+
+            EnemyBullet enemyBullet = bullet.GetComponent<EnemyBullet>();
+            enemyBullet.SetupDamage(range.enemyDmg);
+            Destroy(bullet, range.bulletDuration);
         }
+
         curDelay = enemy.enemyAttackDelay;
     }
 
@@ -199,8 +227,13 @@ public class EnemyController : MonoBehaviour, ICombatable
             {
                 Gizmos.DrawWireSphere((Vector2)transform.position + close.attackOffset, close.attackRange);
             }
-        }
+            else if (enemy is RangeEnemy range)
+            {
+                Gizmos.DrawWireSphere((Vector2)transform.position, range.attackRange);
 
+            }
+        }
+        Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, enemy.checkPlayerRange);
 
     }
