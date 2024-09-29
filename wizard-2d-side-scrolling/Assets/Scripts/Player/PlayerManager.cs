@@ -1,14 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public enum PlayerBehavior
 {
     Normal, UIShowing
+}
+
+public enum PlayerPhase
+{
+    Normal, Battle
 }
 
 public class PlayerManager : MonoBehaviour, ICombatable
@@ -28,7 +31,7 @@ public class PlayerManager : MonoBehaviour, ICombatable
     [HideInInspector] public Vector2 mousePos;
 
     [Header("===== HP =====")]
-    [SerializeField] int maxHP;
+    public int maxHP;
 
     [Header("===== Behavior =====")]
     [SerializeField] PlayerBehavior curBehavior;
@@ -55,6 +58,14 @@ public class PlayerManager : MonoBehaviour, ICombatable
     [Header("===== Attack =====")]
     public Transform spawnBulletPoint;
     float curAttackDelay;
+
+    [Header("===== Phase =====")]
+    [SerializeField] float battlePhaseDuration;
+    [SerializeField] PlayerPhase phase;
+    float curPhaseTime;
+
+    [Header("===== Heal =====")]
+    public int healPerMinute;
 
     public int curHP { get; set; }
 
@@ -86,11 +97,19 @@ public class PlayerManager : MonoBehaviour, ICombatable
         anim = GetComponent<Animator>();
         inputManager = GetComponent<InputManager>();
         playerUI = GetComponent<PlayerUI>();
+
+    }
+
+    private void Start()
+    {
+        SetHP(maxHP);
     }
 
     private void Update()
     {
         DecreaseAttackDelay();
+        UpdatePhase();
+        UpdateBehavior();
     }
 
     private void FixedUpdate()
@@ -305,6 +324,7 @@ public class PlayerManager : MonoBehaviour, ICombatable
                         if (curAttackDelay == 0)
                         {
                             Attack((WeaponItem)item);
+                            SwitchPhase(PlayerPhase.Battle);
                         }
 
                         break;
@@ -383,11 +403,13 @@ public class PlayerManager : MonoBehaviour, ICombatable
     public void SetHP(int amount)
     {
         curHP = amount;
+        playerUI.UpdateHP();
     }
 
     public void Heal(int amount)
     {
         curHP += amount;
+        playerUI.UpdateHP();
         if (curHP > maxHP)
         {
             curHP = maxHP;
@@ -397,7 +419,9 @@ public class PlayerManager : MonoBehaviour, ICombatable
     public void TakeDamage(int amount)
     {
         curHP -= amount;
-        if(curHP <= 0)
+        playerUI.UpdateHP();
+        SwitchPhase(PlayerPhase.Battle);
+        if (curHP <= 0)
         {
             Dead();
         }
@@ -408,6 +432,45 @@ public class PlayerManager : MonoBehaviour, ICombatable
 
     }
 
+    #region Phase
 
+    public void SwitchPhase(PlayerPhase phase)
+    {
+        this.phase = phase;
+        switch (this.phase)
+        {
+            case PlayerPhase.Normal:
+                break;
+            case PlayerPhase.Battle:
+                curPhaseTime = battlePhaseDuration;
+                break;
+        }
+    }
+
+    void UpdatePhase()
+    {
+        switch (phase)
+        {
+            case PlayerPhase.Normal:
+                break;
+            case PlayerPhase.Battle:
+                if (curPhaseTime > 0)
+                {
+                    curPhaseTime -= Time.deltaTime;
+                    if (curPhaseTime <= 0)
+                    {
+                        SwitchPhase(PlayerPhase.Normal);
+                    }
+                }
+                break;
+        }
+    }
+
+    public bool IsPhase(PlayerPhase phase)
+    {
+        return this.phase == phase;
+    }
+
+    #endregion
 
 }

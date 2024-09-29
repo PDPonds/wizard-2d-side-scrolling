@@ -85,6 +85,8 @@ public class GameManager : Singleton<GameManager>
         if (curSec >= 60)
         {
             curMinute++;
+            if (player.IsPhase(PlayerPhase.Normal)) player.Heal(player.healPerMinute);
+
             if (curMinute >= 60)
             {
                 curHours++;

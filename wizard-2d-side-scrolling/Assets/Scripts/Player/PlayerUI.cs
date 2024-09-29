@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -38,6 +39,10 @@ public class PlayerUI : MonoBehaviour
     [Header("===== Storage =====")]
     public GameObject storageInventory;
 
+    [Header("===== HP =====")]
+    [SerializeField] Image hpFill;
+    [SerializeField] TextMeshProUGUI hpText;
+
     private void Awake()
     {
         playerManager = GetComponent<PlayerManager>();
@@ -50,6 +55,13 @@ public class PlayerUI : MonoBehaviour
     private void Update()
     {
         UpdateHours();
+    }
+
+    public void UpdateHP()
+    {
+        float percent = (float)playerManager.curHP / (float)playerManager.maxHP;
+        hpFill.fillAmount = percent;
+        hpText.text = $"{playerManager.curHP} / {playerManager.maxHP}";
     }
 
     #region Interact
@@ -184,7 +196,7 @@ public class PlayerUI : MonoBehaviour
 
     void InitSelectSlotBarBorder()
     {
-        if(slotBorder != null) Destroy(slotBorder.gameObject);
+        if (slotBorder != null) Destroy(slotBorder.gameObject);
 
         GameObject border = Instantiate(selectBorderPrefab);
         border.transform.SetParent(slotBorderParent.transform);
@@ -198,5 +210,7 @@ public class PlayerUI : MonoBehaviour
     }
 
     #endregion
+
+    
 
 }
