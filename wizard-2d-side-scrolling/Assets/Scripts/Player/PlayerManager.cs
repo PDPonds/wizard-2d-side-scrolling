@@ -1,15 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public enum PlayerBehavior
 {
     Normal, UIShowing
 }
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : MonoBehaviour, ICombatable
 {
     public event Action onPlayerStartMove;
     public event Action onPlayerEndMove;
@@ -24,6 +26,9 @@ public class PlayerManager : MonoBehaviour
     [HideInInspector] public PlayerUI playerUI;
 
     [HideInInspector] public Vector2 mousePos;
+
+    [Header("===== HP =====")]
+    [SerializeField] int maxHP;
 
     [Header("===== Behavior =====")]
     [SerializeField] PlayerBehavior curBehavior;
@@ -50,6 +55,8 @@ public class PlayerManager : MonoBehaviour
     [Header("===== Attack =====")]
     public Transform spawnBulletPoint;
     float curAttackDelay;
+
+    public int curHP { get; set; }
 
     private void OnEnable()
     {
@@ -357,7 +364,6 @@ public class PlayerManager : MonoBehaviour
     #endregion
 
     #region Animation Controller
-
     public void Anim_SetBool(string variable, bool result)
     {
         anim.SetBool(variable, result);
@@ -372,7 +378,36 @@ public class PlayerManager : MonoBehaviour
     {
         anim.Play(name);
     }
-
     #endregion
+
+    public void SetHP(int amount)
+    {
+        curHP = amount;
+    }
+
+    public void Heal(int amount)
+    {
+        curHP += amount;
+        if (curHP > maxHP)
+        {
+            curHP = maxHP;
+        }
+    }
+
+    public void TakeDamage(int amount)
+    {
+        curHP -= amount;
+        if(curHP <= 0)
+        {
+            Dead();
+        }
+    }
+
+    public void Dead()
+    {
+
+    }
+
+
 
 }

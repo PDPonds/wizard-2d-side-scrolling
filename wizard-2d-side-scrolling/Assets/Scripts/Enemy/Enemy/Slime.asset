@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f496ab4c49aace4e9a2b683b23f0851, type: 3}
+  m_Name: Slime
+  m_EditorClassIdentifier: 
+  enemyName: Slime
+  enemyPrefab: {fileID: 8917682403765052833, guid: f6dc45e0e0c062b45a8b264effc32c55, type: 3}
+  animOverride: {fileID: 22100000, guid: c3e827b61c7ab7940920fa61d5226199, type: 2}
+  enemyHP: 20
+  checkPlayerRange: 3
+  moveSpeed: 2
+  chaseTimeWhenPlayerIsClose: 10
+  enemyDmg: 5
+  enemyAttackDelay: 1
+  attackRange: 0.8
+  enemyType: 0
+  attackOffset: {x: 0, y: 0}

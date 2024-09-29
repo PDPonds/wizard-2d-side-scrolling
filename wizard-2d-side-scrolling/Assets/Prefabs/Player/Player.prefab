@@ -703,6 +703,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerUI: {fileID: 0}
   mousePos: {x: 0, y: 0}
+  maxHP: 100
   curBehavior: 0
   moveSpeed: 5
   moveInput: {x: 0, y: 0}

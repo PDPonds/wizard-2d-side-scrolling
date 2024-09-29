@@ -26,6 +26,10 @@ public class PlayerBullet : MonoBehaviour
         {
             anim.Play("Hit");
             rb.velocity = Vector3.zero;
+            if (collision.TryGetComponent<ICombatable>(out ICombatable ICom))
+            {
+                ICom.TakeDamage(damage);
+            }
         }
     }
 
