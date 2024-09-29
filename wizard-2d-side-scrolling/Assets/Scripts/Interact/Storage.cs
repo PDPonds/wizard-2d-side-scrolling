@@ -70,27 +70,33 @@ public class Storage : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        PlayerUI playerUI = GameManager.Instance.playerUI;
-        playerUI.ToggleMainInventory();
-        playerUI.storageInventory.gameObject.SetActive(true);
-
-        PlayerManager player = GameManager.Instance.player;
-        player.curSelectStorage = this;
-
-        if (isFirstTimeOpen)
+        if (!GameManager.Instance.playerUI.mainInventory.activeSelf)
         {
-            SpawnItem();
-            SpawnItemObj();
+            PlayerUI playerUI = GameManager.Instance.playerUI;
+            playerUI.ToggleMainInventory();
+            playerUI.storageInventory.gameObject.SetActive(true);
+
+            PlayerManager player = GameManager.Instance.player;
+            player.curSelectStorage = this;
+
+            if (isFirstTimeOpen)
+            {
+                SpawnItem();
+                SpawnItemObj();
+            }
+            else
+            {
+                SpawnItemObj();
+            }
+
+            anim.Play("Open");
+
+            isFirstTimeOpen = false;
         }
         else
         {
-            SpawnItemObj();
+            GameManager.Instance.playerUI.ToggleMainInventory();
         }
-
-        anim.Play("Open");
-
-        isFirstTimeOpen = false;
-
     }
 
     void SpawnItemObj()

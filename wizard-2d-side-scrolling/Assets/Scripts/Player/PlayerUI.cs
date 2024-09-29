@@ -20,6 +20,21 @@ public class PlayerUI : MonoBehaviour
     public GameObject mainInventory;
     public Transform itemRestPoint;
 
+    [Header("===== Inventory Bar =====")]
+    [SerializeField] GameObject slotBorderParent;
+    [SerializeField] GameObject selectBorderPrefab;
+    [SerializeField] GameObject slot1;
+    [SerializeField] GameObject slot2;
+    [SerializeField] GameObject slot3;
+    [SerializeField] GameObject slot4;
+    [SerializeField] GameObject slot5;
+    [SerializeField] GameObject slot6;
+    [SerializeField] GameObject slot7;
+    [SerializeField] GameObject slot8;
+    [SerializeField] GameObject slot9;
+    [HideInInspector] public SlotObj curSlotSelected;
+    GameObject slotBorder;
+
     [Header("===== Storage =====")]
     public GameObject storageInventory;
 
@@ -112,6 +127,74 @@ public class PlayerUI : MonoBehaviour
                 Destroy(slot.GetChild(0).gameObject);
             }
         }
+    }
+
+    #endregion
+
+    #region InventoryBar
+
+    public void SelectSlotBar(int index)
+    {
+        switch (index)
+        {
+            case 1:
+                SlotObj slotObj1 = slot1.GetComponent<SlotObj>();
+                curSlotSelected = slotObj1;
+                break;
+            case 2:
+                SlotObj slotObj2 = slot2.GetComponent<SlotObj>();
+                curSlotSelected = slotObj2;
+                break;
+            case 3:
+                SlotObj slotObj3 = slot3.GetComponent<SlotObj>();
+                curSlotSelected = slotObj3;
+                break;
+            case 4:
+                SlotObj slotObj4 = slot4.GetComponent<SlotObj>();
+                curSlotSelected = slotObj4;
+                break;
+            case 5:
+                SlotObj slotObj5 = slot5.GetComponent<SlotObj>();
+                curSlotSelected = slotObj5;
+                break;
+            case 6:
+                SlotObj slotObj6 = slot6.GetComponent<SlotObj>();
+                curSlotSelected = slotObj6;
+                break;
+            case 7:
+                SlotObj slotObj7 = slot7.GetComponent<SlotObj>();
+                curSlotSelected = slotObj7;
+                break;
+            case 8:
+                SlotObj slotObj8 = slot8.GetComponent<SlotObj>();
+                curSlotSelected = slotObj8;
+                break;
+            case 9:
+                SlotObj slotObj9 = slot9.GetComponent<SlotObj>();
+                curSlotSelected = slotObj9;
+                break;
+            default:
+                SlotObj slotObj = slot1.GetComponent<SlotObj>();
+                curSlotSelected = slotObj;
+                break;
+        }
+
+        InitSelectSlotBarBorder();
+    }
+
+    void InitSelectSlotBarBorder()
+    {
+        if(slotBorder != null) Destroy(slotBorder.gameObject);
+
+        GameObject border = Instantiate(selectBorderPrefab);
+        border.transform.SetParent(slotBorderParent.transform);
+
+        slotBorder = border;
+
+        RectTransform curSlotRect = curSlotSelected.GetComponent<RectTransform>();
+
+        RectTransform rectTransform = border.GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = curSlotRect.localPosition + new Vector3(0, -50, 0);
     }
 
     #endregion

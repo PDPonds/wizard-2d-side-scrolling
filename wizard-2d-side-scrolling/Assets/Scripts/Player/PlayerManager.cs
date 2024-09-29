@@ -47,6 +47,7 @@ public class PlayerManager : MonoBehaviour
     [Header("===== Storage =====")]
     [HideInInspector] public Storage curSelectStorage;
 
+
     private void OnEnable()
     {
         onPlayerStartMove += HandleStartMoveAnim;

@@ -29,6 +29,17 @@ public class InputManager : MonoBehaviour
 
             input.Controller.MousePos.performed += i => playerManager.mousePos = i.ReadValue<Vector2>();
 
+            input.Inventory.Slot1.performed += i => playerUI.SelectSlotBar(1);
+            input.Inventory.Slot2.performed += i => playerUI.SelectSlotBar(2);
+            input.Inventory.Slot3.performed += i => playerUI.SelectSlotBar(3);
+            input.Inventory.Slot4.performed += i => playerUI.SelectSlotBar(4);
+            input.Inventory.Slot5.performed += i => playerUI.SelectSlotBar(5);
+            input.Inventory.Slot6.performed += i => playerUI.SelectSlotBar(6);
+            input.Inventory.Slot7.performed += i => playerUI.SelectSlotBar(7);
+            input.Inventory.Slot8.performed += i => playerUI.SelectSlotBar(8);
+            input.Inventory.Slot9.performed += i => playerUI.SelectSlotBar(9);
+
+
         }
 
         input.Enable();
