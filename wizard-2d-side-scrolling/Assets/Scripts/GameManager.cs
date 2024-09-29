@@ -39,6 +39,11 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] int minDrop;
     [SerializeField] int maxDrop;
 
+    [Header("===== Parrallax =====")]
+    [SerializeField] Parallax back;
+    [SerializeField] Parallax mid;
+    [SerializeField] Parallax Fornt;
+
     private void Awake()
     {
         InitPrefab();
