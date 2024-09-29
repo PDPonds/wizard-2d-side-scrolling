@@ -47,6 +47,9 @@ public class PlayerManager : MonoBehaviour
     [Header("===== Storage =====")]
     [HideInInspector] public Storage curSelectStorage;
 
+    [Header("===== Attack =====")]
+    public Transform spawnBulletPoint;
+    float curAttackDelay;
 
     private void OnEnable()
     {
@@ -76,6 +79,11 @@ public class PlayerManager : MonoBehaviour
         anim = GetComponent<Animator>();
         inputManager = GetComponent<InputManager>();
         playerUI = GetComponent<PlayerUI>();
+    }
+
+    private void Update()
+    {
+        DecreaseAttackDelay();
     }
 
     private void FixedUpdate()
@@ -264,6 +272,86 @@ public class PlayerManager : MonoBehaviour
         }
         slotIndex = -1;
         return false;
+    }
+
+    #endregion
+
+    #region UseItem
+
+    Vector2 GetWorldPosFormMousPos()
+    {
+        return Camera.main.ScreenToWorldPoint(mousePos);
+    }
+
+    public void UseItem()
+    {
+        if (IsBehavior(PlayerBehavior.Normal) && playerUI.curSlotSelected != null)
+        {
+            if (playerUI.curSlotSelected.transform.childCount > 0)
+            {
+                ItemObj itemObj = playerUI.curSlotSelected.transform.GetChild(0).GetComponent<ItemObj>();
+                ItemSO item = itemObj.item;
+                switch (item.itemType)
+                {
+                    case ItemType.Weapon:
+
+                        if (curAttackDelay == 0)
+                        {
+                            Attack((WeaponItem)item);
+                        }
+
+                        break;
+                    case ItemType.Useable:
+
+                        Debug.Log("UseItem");
+
+                        break;
+                    case ItemType.Placeable:
+
+                        Debug.Log("Place");
+
+                        break;
+                }
+            }
+        }
+    }
+
+    void Attack(WeaponItem weapon)
+    {
+        InitBullet(weapon);
+        curAttackDelay = weapon.attackDelay;
+    }
+
+    void InitBullet(WeaponItem weapon)
+    {
+        GameObject bullet = Instantiate(weapon.bulletPrefab, spawnBulletPoint.transform.position, Quaternion.identity);
+
+        SpriteRenderer ren = bullet.GetComponent<SpriteRenderer>();
+        Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
+        Vector3 worldMouse = GetWorldPosFormMousPos();
+        Vector2 dir = worldMouse - transform.position;
+        dir.Normalize();
+        rb.AddForce(dir * weapon.bulletSpeed, ForceMode2D.Impulse);
+
+        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        Quaternion q = Quaternion.AngleAxis(angle, Vector3.forward);
+        bullet.transform.rotation = q;
+
+        PlayerBullet playerBullet = bullet.GetComponent<PlayerBullet>();
+        playerBullet.SetupDamage(weapon.GetDamage());
+        Destroy(bullet, weapon.bulletDuration);
+    }
+
+    void DecreaseAttackDelay()
+    {
+        if (curAttackDelay > 0)
+        {
+            curAttackDelay -= Time.deltaTime;
+            if (curAttackDelay <= 0)
+            {
+                curAttackDelay = 0;
+            }
+        }
     }
 
     #endregion

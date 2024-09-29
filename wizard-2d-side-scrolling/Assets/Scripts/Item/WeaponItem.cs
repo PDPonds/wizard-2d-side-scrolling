@@ -5,6 +5,11 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Item/Weapon")]
 public class WeaponItem : ItemSO
 {
+    [Header("- Prefab")]
+    public GameObject bulletPrefab;
+
+    [Header("- Speed")]
+    public float bulletSpeed;
 
     [Header("- Delay")]
     public float attackDelay;
@@ -12,6 +17,9 @@ public class WeaponItem : ItemSO
     [Header("- Damage")]
     public int minDamage;
     public int maxDamage;
+
+    [Header("- Bullet Duration")]
+    public float bulletDuration;
 
     public WeaponItem()
     {

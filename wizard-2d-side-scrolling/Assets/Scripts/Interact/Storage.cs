@@ -23,12 +23,13 @@ public class Storage : MonoBehaviour, IInteractable
     void SpawnItem()
     {
         int spawnCount = GetSpawnCount();
-        ItemSO item = GameManager.Instance.RandomItem();
-        int amount = GameManager.Instance.RandomAmount();
         if (spawnCount > 0)
         {
             for (int i = 0; i < spawnCount; i++)
             {
+                ItemSO item = GameManager.Instance.RandomItem();
+                int amount = GameManager.Instance.RandomAmount();
+
                 StorageSlot slot = new StorageSlot();
                 slot.item = item;
                 slot.amount = amount;

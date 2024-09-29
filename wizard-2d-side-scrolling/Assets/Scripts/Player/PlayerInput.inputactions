@@ -303,6 +303,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "UseItemInSlot",
+                    "type": "Button",
+                    "id": "e432099c-bcc6-4d00-bc43-8d668783a9c4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -402,6 +411,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Slot9",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "98c75824-9627-4dd6-bd7f-b55e2905f02e",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UseItemInSlot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -39,6 +39,7 @@ public class InputManager : MonoBehaviour
             input.Inventory.Slot8.performed += i => playerUI.SelectSlotBar(8);
             input.Inventory.Slot9.performed += i => playerUI.SelectSlotBar(9);
 
+            input.Inventory.UseItemInSlot.performed += i => playerManager.UseItem();
 
         }
 

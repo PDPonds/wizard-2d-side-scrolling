@@ -325,6 +325,15 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UseItemInSlot"",
+                    ""type"": ""Button"",
+                    ""id"": ""e432099c-bcc6-4d00-bc43-8d668783a9c4"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -426,6 +435,17 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
                     ""action"": ""Slot9"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""98c75824-9627-4dd6-bd7f-b55e2905f02e"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseItemInSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -450,6 +470,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         m_Inventory_Slot7 = m_Inventory.FindAction("Slot7", throwIfNotFound: true);
         m_Inventory_Slot8 = m_Inventory.FindAction("Slot8", throwIfNotFound: true);
         m_Inventory_Slot9 = m_Inventory.FindAction("Slot9", throwIfNotFound: true);
+        m_Inventory_UseItemInSlot = m_Inventory.FindAction("UseItemInSlot", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -598,6 +619,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Inventory_Slot7;
     private readonly InputAction m_Inventory_Slot8;
     private readonly InputAction m_Inventory_Slot9;
+    private readonly InputAction m_Inventory_UseItemInSlot;
     public struct InventoryActions
     {
         private @PlayerInput m_Wrapper;
@@ -611,6 +633,7 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         public InputAction @Slot7 => m_Wrapper.m_Inventory_Slot7;
         public InputAction @Slot8 => m_Wrapper.m_Inventory_Slot8;
         public InputAction @Slot9 => m_Wrapper.m_Inventory_Slot9;
+        public InputAction @UseItemInSlot => m_Wrapper.m_Inventory_UseItemInSlot;
         public InputActionMap Get() { return m_Wrapper.m_Inventory; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -647,6 +670,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Slot9.started += instance.OnSlot9;
             @Slot9.performed += instance.OnSlot9;
             @Slot9.canceled += instance.OnSlot9;
+            @UseItemInSlot.started += instance.OnUseItemInSlot;
+            @UseItemInSlot.performed += instance.OnUseItemInSlot;
+            @UseItemInSlot.canceled += instance.OnUseItemInSlot;
         }
 
         private void UnregisterCallbacks(IInventoryActions instance)
@@ -678,6 +704,9 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
             @Slot9.started -= instance.OnSlot9;
             @Slot9.performed -= instance.OnSlot9;
             @Slot9.canceled -= instance.OnSlot9;
+            @UseItemInSlot.started -= instance.OnUseItemInSlot;
+            @UseItemInSlot.performed -= instance.OnUseItemInSlot;
+            @UseItemInSlot.canceled -= instance.OnUseItemInSlot;
         }
 
         public void RemoveCallbacks(IInventoryActions instance)
@@ -714,5 +743,6 @@ public partial class @PlayerInput: IInputActionCollection2, IDisposable
         void OnSlot7(InputAction.CallbackContext context);
         void OnSlot8(InputAction.CallbackContext context);
         void OnSlot9(InputAction.CallbackContext context);
+        void OnUseItemInSlot(InputAction.CallbackContext context);
     }
 }

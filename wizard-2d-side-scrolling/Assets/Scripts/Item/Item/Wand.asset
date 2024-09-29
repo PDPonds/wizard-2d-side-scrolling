@@ -16,6 +16,9 @@ MonoBehaviour:
   itemIcon: {fileID: -1154513955, guid: 6e3ce18f42152c04bbf1973108e6ba86, type: 3}
   maxStack: 1
   itemType: 0
+  bulletPrefab: {fileID: 9163054922385266874, guid: 9c7258a2339e34949bd9036b1f8cc97e, type: 3}
+  bulletSpeed: 7
   attackDelay: 0.5
   minDamage: 3
   maxDamage: 5
+  bulletDuration: 5
