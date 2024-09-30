@@ -9,10 +9,14 @@ public class PlayerUI : MonoBehaviour
     PlayerManager playerManager;
 
     [Header("===== Time =====")]
-    [SerializeField] TextMeshProUGUI hoursText;
+    [SerializeField] Image hoursImg;
     [SerializeField] TextMeshProUGUI dayText;
     [SerializeField] TextMeshProUGUI dayCountText;
-    [SerializeField] TextMeshProUGUI timeOfDayText;
+    [SerializeField] Image timeOfDayImg;
+
+    [SerializeField] Sprite halfSun;
+    [SerializeField] Sprite sun;
+    [SerializeField] Sprite moon;
 
     [Header("===== Interact =====")]
     [SerializeField] GameObject interactText;
@@ -86,7 +90,8 @@ public class PlayerUI : MonoBehaviour
 
     public void UpdateHours()
     {
-        hoursText.text = $"Hours : {GameManager.Instance.curHours} : {GameManager.Instance.curMinute} : {GameManager.Instance.curSec}";
+        float percent = (float)GameManager.Instance.minuteShow / (float)1440;
+        hoursImg.fillAmount = percent;
     }
 
     public void UpdateDayCount()
@@ -101,7 +106,18 @@ public class PlayerUI : MonoBehaviour
 
     public void UpdateTimeOfDayText()
     {
-        timeOfDayText.text = $"{GameManager.Instance.curTimeOfTheDay}";
+        switch (GameManager.Instance.curTimeOfTheDay)
+        {
+            case TimeOfTheDay.Morning:
+                timeOfDayImg.sprite = halfSun;
+                break;
+            case TimeOfTheDay.Afternoon:
+                timeOfDayImg.sprite = sun;
+                break;
+            case TimeOfTheDay.Evening:
+                timeOfDayImg.sprite = moon;
+                break;
+        }
     }
 
     #endregion
@@ -211,6 +227,6 @@ public class PlayerUI : MonoBehaviour
 
     #endregion
 
-    
+
 
 }

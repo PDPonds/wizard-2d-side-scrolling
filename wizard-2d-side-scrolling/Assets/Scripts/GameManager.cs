@@ -32,6 +32,7 @@ public class GameManager : Singleton<GameManager>
     [HideInInspector] public int curHours;
     [HideInInspector] public int curMinute;
     [HideInInspector] public float curSec;
+    [HideInInspector] public float minuteShow;
 
     [Header("===== Item Generator =====")]
     [SerializeField] List<ItemSO> allItems = new List<ItemSO>();
@@ -85,6 +86,7 @@ public class GameManager : Singleton<GameManager>
         if (curSec >= 60)
         {
             curMinute++;
+            minuteShow++;
             if (player.IsPhase(PlayerPhase.Normal)) player.Heal(player.healPerMinute);
 
             if (curMinute >= 60)
@@ -97,6 +99,7 @@ public class GameManager : Singleton<GameManager>
                 if (curHours >= 24)
                 {
                     curDayCount++;
+                    minuteShow = 0;
                     playerUI.UpdateDayCount();
                     SwitchDay();
                     curHours = 0;
