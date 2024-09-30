@@ -56,9 +56,13 @@ MonoBehaviour:
   curHours: 0
   curMinute: 0
   curSec: 0
+  minuteShow: 0
   allItems:
   - {fileID: 11400000, guid: c5d14c9ffb4e03e4795b323ef315570f, type: 2}
   - {fileID: 11400000, guid: 3d06e9046f08260449a054e8b283e7f1, type: 2}
   itemObjPrefab: {fileID: 6842100679961187940, guid: e28f9ecdaafe3dd4795e56ce07ac8328, type: 3}
-  minDrop: 1
-  maxDrop: 4
+  minDrop: 5
+  maxDrop: 10
+  back: {fileID: 0}
+  mid: {fileID: 0}
+  Fornt: {fileID: 0}

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.Progress;
 
 public class PlayerUI : MonoBehaviour
 {
@@ -23,6 +24,7 @@ public class PlayerUI : MonoBehaviour
 
     [Header("===== Inventory =====")]
     public GameObject mainInventory;
+    public GameObject mainInventoryBorder;
     public Transform itemRestPoint;
 
     [Header("===== Inventory Bar =====")]
@@ -136,6 +138,15 @@ public class PlayerUI : MonoBehaviour
                 playerManager.curSelectStorage = null;
                 DestroyItemObjInStorage();
             }
+
+            if (playerManager.curChest != null)
+            {
+                storageInventory.SetActive(false);
+                playerManager.curChest.anim.Play("Close");
+                playerManager.curChest = null;
+                DestroyItemObjInStorage();
+            }
+
             playerManager.SwitchBehavior(PlayerBehavior.Normal);
         }
         else

@@ -62,6 +62,11 @@ public class ItemObj : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
         {
             GameManager.Instance.player.curSelectStorage.UpdateStorage();
         }
+
+        if (GameManager.Instance.player.curChest != null)
+        {
+            GameManager.Instance.player.curChest.UpdateStorage();
+        }
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -85,6 +90,12 @@ public class ItemObj : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragH
         {
             GameManager.Instance.player.curSelectStorage.UpdateStorage();
         }
+
+        if (GameManager.Instance.player.curChest != null)
+        {
+            GameManager.Instance.player.curChest.UpdateStorage();
+        }
+
     }
 
 }

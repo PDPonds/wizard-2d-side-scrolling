@@ -54,6 +54,7 @@ public class PlayerManager : MonoBehaviour, ICombatable
 
     [Header("===== Storage =====")]
     [HideInInspector] public Storage curSelectStorage;
+    [HideInInspector] public Chest curChest;
 
     [Header("===== Attack =====")]
     public Transform spawnBulletPoint;

@@ -1131,6 +1131,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   curSelectStorage: {fileID: 0}
+  curChest: {fileID: 0}
   spawnBulletPoint: {fileID: 4080656685900669363}
   battlePhaseDuration: 5
   phase: 0
@@ -1168,6 +1169,7 @@ MonoBehaviour:
   moon: {fileID: 21300000, guid: 8764855662427254799e2a4ec3625db6, type: 3}
   interactText: {fileID: 7521540904155453170}
   mainInventory: {fileID: 6446789673674835992}
+  mainInventoryBorder: {fileID: 4716226347677660534}
   itemRestPoint: {fileID: 328980733995005213}
   slotBorderParent: {fileID: 2661008601101084222}
   selectBorderPrefab: {fileID: 5901747421984337531, guid: a8aaabdb7da29334ba8f1753793f528d, type: 3}
