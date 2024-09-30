@@ -1,1 +1,18 @@
 # wizard-2d-side-scrolling
+
+Setup Project (Import InputSystem , Create GameManager , Create Singleton Class) (1 h)
+Player Movement (1.5 h)
+Player Interact (50 m)
+Time Hop (2 h)
+Inventory Slot and Item Object (Change Slot)(1 h)
+Item Data (1 h)
+Storage (Collect Item) (4 h)
+Inventory bar (Select Item in Inventory bar with Number) (1 h)
+Attack with Wand in Inventory bar (1 h)
+Parallax (10 m)
+Enemy Controller (3 h)
+Close Combat Enemy(1 h)
+Range Enemy (1 h)
+Heal per Minute (1 h)
+Enemy Skill (20 m)
+Crafting Chest (1.5 h)
