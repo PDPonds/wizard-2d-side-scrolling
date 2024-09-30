@@ -18,9 +18,11 @@ MonoBehaviour:
   enemyHP: 20
   checkPlayerRange: 3
   moveSpeed: 2
-  chaseTimeWhenPlayerIsClose: 10
   enemyDmg: 5
   enemyAttackDelay: 1
   attackRange: 0.8
   enemyType: 0
+  skills:
+  - enemySkill: {fileID: 11400000, guid: 25c5ceb38dfb14e468b2c43171ea4995, type: 2}
+    skillType: 0
   attackOffset: {x: 0, y: 0}

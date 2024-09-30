@@ -39,6 +39,7 @@ public class EnemyController : MonoBehaviour, ICombatable
         SetHP(enemy.enemyHP);
         anim.runtimeAnimatorController = enemy.animOverride;
         SwitchBehavior(EnemyBehavior.Idle);
+        enemy.ActiveSpawnSkill(gameObject);
     }
 
     private void Update()
@@ -67,6 +68,7 @@ public class EnemyController : MonoBehaviour, ICombatable
     {
         curHP -= amount;
         UpdateHPFill();
+        SwitchBehavior(EnemyBehavior.Chase);
         if (curHP <= 0)
         {
             Dead();
@@ -94,6 +96,7 @@ public class EnemyController : MonoBehaviour, ICombatable
             case EnemyBehavior.Chase:
                 break;
             case EnemyBehavior.Dead:
+                enemy.ActiveDeathSkill(gameObject);
                 break;
         }
     }
@@ -214,6 +217,8 @@ public class EnemyController : MonoBehaviour, ICombatable
             enemyBullet.SetupDamage(range.enemyDmg);
             Destroy(bullet, range.bulletDuration);
         }
+
+        enemy.ActiveAttackSkill(gameObject);
 
         curDelay = enemy.enemyAttackDelay;
     }
